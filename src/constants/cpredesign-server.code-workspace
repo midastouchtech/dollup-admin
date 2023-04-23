@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../../../cpredesign-server"
+		},
+		{
+			"path": "../../../cpredesign-admin"
+		},
+		{
+			"path": "../.."
+		}
+	]
+}
