@@ -135,9 +135,9 @@ const Username = styled.p`
 
 const StyledAside = styled.aside`
   height: 90vh;
-  background-color: #78136f!important;
-    border-radius: 20px;
-    margin-top: 5vh;
+  background-color: #78136f !important;
+  border-radius: 20px;
+  margin-top: 5vh;
 `;
 
 const StyledMain = styled.main`
@@ -149,12 +149,12 @@ const StyledMain = styled.main`
     color: #fff;
     background-color: #e91e63 !important;
     border-color: #e91e63 !important;
-}
-.table .thead-dark th {
+  }
+  .table .thead-dark th {
     color: #fff;
     background-color: #840070;
     border-color: #840070;
-}
+  }
 `;
 
 const StyledImg = styled.img`
@@ -165,14 +165,14 @@ const StyledImg = styled.img`
 `;
 
 const Banner = styled.div`
-    width: 100vw;
-    height: 40px;
-    background: #d80009;
-    padding: 10px;
-    text-align: center;
-    color: white;
-    font-weight: 700;
-`
+  width: 100vw;
+  height: 40px;
+  background: #d80009;
+  padding: 10px;
+  text-align: center;
+  color: white;
+  font-weight: 700;
+`;
 
 const navItems = [
   {
@@ -215,7 +215,7 @@ const navItems = [
     icon: "Services",
     title: "Requests",
     link: "/requests",
-  }
+  },
 ];
 
 function Layout({ socket, children }) {
@@ -224,12 +224,11 @@ function Layout({ socket, children }) {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
 
   const [systemSettings, setSystemSettings] = useState();
 
-  useEffect(()=>{
-    console.log("use effect socket", socket)
+  useEffect(() => {
+    console.log("use effect socket", socket);
     // if(socket && !exists(systemSettings)){
     //   socket.emit("GET_SYSTEM_SETTINGS")
     //   socket.on("RECEIVE_SYSTEM_SETTINGS", settings => {
@@ -241,7 +240,7 @@ function Layout({ socket, children }) {
     // }
     if (socket && !exists(user)) {
       socket.onAny((event) => console.log("** Handling:", event));
-  
+
       if (cookieUser) {
         socket.emit("GET_USER", { id: cookieUser });
       }
@@ -255,10 +254,8 @@ function Layout({ socket, children }) {
         dispatch(save(u));
       });
     }
-  
   }, [socket]);
-  
-  
+
   const isAuthRoute =
     location.pathname === "/login" || location.pathname === "/register";
 
@@ -266,27 +263,38 @@ function Layout({ socket, children }) {
     <Fragment>
       <Helmet>
         <title> Admin Dashboard</title>
-        <meta name="description" content="ClinicPlus offers comprehensive Occupational Health Management and Consulting service to mines and industries. Our goal is to help our clients manage their occupational health and safety risks." />
+        <meta
+          name="description"
+          content="ClinicPlus offers comprehensive Occupational Health Management and Consulting service to mines and industries. Our goal is to help our clients manage their occupational health and safety risks."
+        />
         {/* <link href="/cp-logo-full.png" rel="icon" />
         <link href="/cp-logo-full.png" rel="apple-touch-icon" /> */}
         <link href="https://fonts.gstatic.com" rel="preconnect" />
 
-        <meta property="og:title" content="ClinicPlus Bookings"/>
+        <meta property="og:title" content="ClinicPlus Bookings" />
 
-        <meta property="og:description" content="ClinicPlus offers comprehensive Occupational Health Management and Consulting service to mines and industries. Our goal is to help our clients manage their occupational health and safety risks."/>
+        <meta
+          property="og:description"
+          content="ClinicPlus offers comprehensive Occupational Health Management and Consulting service to mines and industries. Our goal is to help our clients manage their occupational health and safety risks."
+        />
 
-        <meta property="og:image:width" content="1200"/>
+        <meta property="og:image:width" content="1200" />
 
-        <meta property="og:image:height" content="630"/>
+        <meta property="og:image:height" content="630" />
         <link
           href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
           rel="stylesheet"
         />
 
         <link href="/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="/css/bootstrap-directional-buttons.min.css" rel="stylesheet" />
+        <link
+          href="/css/bootstrap-directional-buttons.min.css"
+          rel="stylesheet"
+        />
       </Helmet>
-      {systemSettings?.client.underMaintanance && <Banner>Please note the system is under maintanance</Banner>}
+      {systemSettings?.client.underMaintanance && (
+        <Banner>Please note the system is under maintanance</Banner>
+      )}
       {!isAuthRoute && (
         <Fragment>
           <div className="row">
@@ -322,8 +330,7 @@ function Layout({ socket, children }) {
             </StyledAside>
             <StyledMain className="col-xs-12 col-sm-12 col-lg-9">
               <div className="container">
-                <div class="pagetitle mt-3 mb-3">
-                </div>
+                <div class="pagetitle mt-3 mb-3"></div>
               </div>
               {children}
             </StyledMain>
