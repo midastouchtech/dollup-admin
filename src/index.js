@@ -7,16 +7,16 @@ import AppointmentCreator from "./pages/appointments/appointment/create";
 import AppointmentQuote from "./pages/appointments/appointment/quote";
 
 import Vendors from "./pages/vendors";
-import Customers from "./pages/customers"
+import Customers from "./pages/customers";
 import Services from "./pages/services";
 import Stylists from "./pages/stylists";
 
 import Categories from "./pages/categories";
-import CategoryCreator from './pages/categories/category/create'
-import CategoryEditor from './pages/categories/category/edit';
+import CategoryCreator from "./pages/categories/category/create";
+import CategoryEditor from "./pages/categories/category/edit";
 import SubCategories from "./pages/subCategories";
-import SubCategoryCreator from './pages/subCategories/subCategory/create'
-import SubCategoryEditor from './pages/subCategories/subCategory/edit';
+import SubCategoryCreator from "./pages/subCategories/subCategory/create";
+import SubCategoryEditor from "./pages/subCategories/subCategory/edit";
 import Requests from "./pages/requests";
 
 import Settings from "./pages/settings";
@@ -35,7 +35,7 @@ import io from "socket.io-client";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import SimpleLayout from "./components/layout/simple";
-import "./css/style.css"
+import "./css/style.css";
 
 const Container = styled.div`
   height: 100vh;
@@ -52,11 +52,11 @@ const Main = () => {
 
   useEffect(() => {
     const socektOptions = {
-      path: '/socket.io',
-      transports: ['websocket'],
+      path: "/socket.io",
+      transports: ["websocket"],
       secure: true,
-      }
-    const newSocket = io(`http://localhost:3067`, socektOptions);
+    };
+    const newSocket = io(`${process.env.REACT_APP_SOCKET_URL}`, socektOptions);
     setSocket(newSocket);
     return () => newSocket.close();
   }, [setSocket]);
@@ -64,9 +64,30 @@ const Main = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<SimpleLayout><Login socket={socket} /></SimpleLayout>} />
-        <Route path="/logout" element={<SimpleLayout><Logout socket={socket} /></SimpleLayout>} />
-        <Route path="/register" element={<SimpleLayout><Register socket={socket} /></SimpleLayout>} />
+        <Route
+          path="/login"
+          element={
+            <SimpleLayout>
+              <Login socket={socket} />
+            </SimpleLayout>
+          }
+        />
+        <Route
+          path="/logout"
+          element={
+            <SimpleLayout>
+              <Logout socket={socket} />
+            </SimpleLayout>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <SimpleLayout>
+              <Register socket={socket} />
+            </SimpleLayout>
+          }
+        />
         <Route
           path="/"
           element={
@@ -126,9 +147,9 @@ const Main = () => {
         <Route
           path="/appointment/quote/:appId"
           element={
-              <SimpleLayout>
-                <AppointmentQuote socket={socket} />
-              </SimpleLayout>
+            <SimpleLayout>
+              <AppointmentQuote socket={socket} />
+            </SimpleLayout>
           }
         />
         <Route
