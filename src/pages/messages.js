@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Uploader from "./nda";
 import { useSelector } from "react-redux";
 import { selectUser } from "../store/user";
 
@@ -7,7 +6,7 @@ import { Link } from "react-router-dom";
 import { isNil, isEmpty } from "ramda";
 import styled from "styled-components";
 import { assoc } from "ramda";
-import moment from 'moment';
+import moment from "moment";
 import { ButtonContainer } from "../components/form";
 
 const Container = styled.div`
@@ -17,7 +16,6 @@ const Container = styled.div`
   align-items: flex-start;
   height: 100%;
   flex-direction: column;
-  
 `;
 
 export const Row = styled.div`
@@ -71,12 +69,12 @@ export const FullPane = styled.div`
           border-radius: 8px;
           font-size: 12px;
           cursor: pointer;
-          &:hover{
+          &:hover {
             background: #c3a059;
             box-shadow: 1px 1px 3px 0px #0000007a;
           }
-          &.disabled{
-            background: #666; 
+          &.disabled {
+            background: #666;
             cursor: not-allowed;
           }
         }
@@ -92,9 +90,9 @@ const Message = styled.div`
   flex-direction: column;
   background: #f3f5e8;
   border-radius: 5px;
-  overflow: hidden ;
-    margin: 10px;
-    width: 400px;
+  overflow: hidden;
+  margin: 10px;
+  width: 400px;
 `;
 
 const MessageBody = styled.div`
@@ -105,7 +103,6 @@ const MessageBody = styled.div`
   align-items: flex-start;
   padding: 2px 10px;
   font-size: 12px;
-  
 `;
 
 const MessageFooter = styled.div`
@@ -145,19 +142,18 @@ const MessagesContainer = styled.div`
   height: 70%;
   overflow-y: scroll;
   width: 90%;
-  .left{
+  .left {
     margin-left: 450px;
   }
 `;
 
 const ButtonSContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: 210px;
-    justify-content: space-around;
-
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 210px;
+  justify-content: space-around;
 `;
 
 function Payments({ socket }) {
@@ -171,30 +167,32 @@ function Payments({ socket }) {
     setMessageToSend(e.target.value);
   };
 
-  const isCurrentUser = author => {
+  const isCurrentUser = (author) => {
     return author.id === user.id;
-  }
+  };
 
   const sendMessage = (url) => {
-    setMessageToSend("")
+    setMessageToSend("");
     const appMessages = user.messages;
     console.log("App messaes", appMessages);
-    const newMessages = 
-      [
-        ...appMessages,
-        {
-          message: messageToSend,
-          author: {id:user.id, name:user.details.name + ' '+ user.details.surname},
-          createdAt: new Date(),
+    const newMessages = [
+      ...appMessages,
+      {
+        message: messageToSend,
+        author: {
+          id: user.id,
+          name: user.details.name + " " + user.details.surname,
         },
-      ];
+        createdAt: new Date(),
+      },
+    ];
     console.log({
       id: user.id,
-      messages: newMessages
-    })
+      messages: newMessages,
+    });
     socket.emit("UPDATE_USER", {
       id: user.id,
-      messages: newMessages
+      messages: newMessages,
     });
   };
 
@@ -205,7 +203,10 @@ function Payments({ socket }) {
           <MessagesContainer>
             {exists(messages) &&
               messages.map((message, index) => (
-                <Message key={index} className={isCurrentUser(message.author) ? "right" : "left"}>
+                <Message
+                  key={index}
+                  className={isCurrentUser(message.author) ? "right" : "left"}
+                >
                   <MessageBody>{message.message}</MessageBody>
                   <MessageFooter>
                     <div>{moment(message.createdAt).fromNow()}</div>
@@ -216,9 +217,9 @@ function Payments({ socket }) {
           </MessagesContainer>
           <MessageWriterContainer>
             <MessageWriter onChange={onChange} value={messageToSend} />
-            
-            <ButtonSContainer>  
-                <button onClick={sendMessage}>Send</button>
+
+            <ButtonSContainer>
+              <button onClick={sendMessage}>Send</button>
             </ButtonSContainer>
           </MessageWriterContainer>
         </Container>
