@@ -27,7 +27,7 @@ const Wrapper = styled.div`
   padding: 40px;
   height: 500px;
   border-radius: 10px;
-  background: #343940;
+  color: #343940;
   @media (max-width: 800px) {
     width: 100%;
   }
