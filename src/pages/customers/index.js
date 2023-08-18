@@ -22,7 +22,6 @@ const NoAppointments = styled.div`
   align-items: center;
   height: 500px;
   width: 100%;
-
 `;
 
 const Customers = ({ socket }) => {
@@ -34,28 +33,26 @@ const Customers = ({ socket }) => {
   const [notFound, setNotFound] = useState(false);
 
   const getPageCustomers = (p) => {
-      socket.emit("GET_NEXT_PAGE_CUSTOMERS", { page: p, pageLimit:25});
-      socket.on("RECEIVE_NEXT_PAGE_CUSTOMERS", (data) => {
-        console.log("received", data)
-        setCustomers(data.customers);
-        setOriginalCustomers(data.customers);
-        setPage(p);
-      });
+    socket.emit("GET_NEXT_PAGE_CUSTOMERS", { page: p, pageLimit: 25 });
+    socket.on("RECEIVE_NEXT_PAGE_CUSTOMERS", (data) => {
+      console.log("received", data);
+      setCustomers(data.customers);
+      setOriginalCustomers(data.customers);
+      setPage(p);
+    });
   };
-  
-  useEffect(()=>{
-    console.log("use effect socket", socket)
+
+  useEffect(() => {
+    console.log("use effect socket", socket);
     if (socket && !customers) {
       getPageCustomers(0);
     }
-  
   }, [socket]);
-  
 
   const handleSearch = async (term) => {
     setLoading(true);
     setNotFound(false);
-    socket.emit("SEARCH_CUSTOMER", {term: searchTerm});
+    socket.emit("SEARCH_CUSTOMER", { term: searchTerm });
     socket.on("RECEIVE_SEARCHED_CUSTOMER", (data) => {
       setCustomers(data);
       setLoading(false);
@@ -71,15 +68,13 @@ const Customers = ({ socket }) => {
     setCustomers(originalCustomers);
     setSearchTerm("");
     setNotFound(false);
-  }
+  };
 
   return (
     <div className="container-fluid">
       <div className="d-flex flex-wrap mb-2 align-items-center justify-content-between">
         <div className="mb-3 mr-3">
-          <h6 className="fs-16 text-black font-w600 mb-0">
-            Customers
-          </h6>
+          <h6 className="fs-16 text-black font-w600 mb-0">Customers</h6>
           <span className="fs-14">All active customers listed here </span>
         </div>
       </div>
@@ -94,19 +89,23 @@ const Customers = ({ socket }) => {
           />
         </div>
         <div className="col-1">
-          <button type="button" class="btn btn-primary" onClick={handleSearch}>Search</button>
+          <button type="button" class="btn btn-primary" onClick={handleSearch}>
+            Search
+          </button>
         </div>
         <div className="col-1">
-          <button type="button" class="btn btn-primary" onClick={clearSearch}>Clear</button>
+          <button type="button" class="btn btn-primary" onClick={clearSearch}>
+            Clear
+          </button>
         </div>
       </div>
       <div className="row">
         <div className="col-12 d-flex justify-content-center">
-        {loading && (
-          <div className="spinner-border" role="status">
-            <span className="sr-only">Searching for customer</span>
-          </div>
-        )}
+          {loading && (
+            <div className="spinner-border" role="status">
+              <span className="sr-only">Searching for customer</span>
+            </div>
+          )}
         </div>
         {notFound && (
           <div className="alert alert-danger" role="alert">
@@ -121,10 +120,7 @@ const Customers = ({ socket }) => {
             <div id="All" className="tab-pane active fade show">
               <div className="table-responsive">
                 {!isNil(customers) && !isEmpty(customers) && (
-                  <table
-                    id="example2"
-                    className="table table-bordered"
-                  >
+                  <table id="example2" className="table table-bordered">
                     <thead class="thead-dark">
                       <tr>
                         <th>Name</th>
@@ -140,9 +136,12 @@ const Customers = ({ socket }) => {
                           <td>{customer?.name}</td>
                           <td>{customer?.phoneNumber}</td>
                           <td>{customer?.email}</td>
-                          <td>{customer?.address}</td>
+                          <td>{customer?.address?.address}</td>
                           <td>
-                            <Link to={`/customer/edit/${customer.id}`}  className="btn btn-xs btn-primary text-nowrap">
+                            <Link
+                              to={`/customer/edit/${customer.id}`}
+                              className="btn btn-xs btn-primary text-nowrap"
+                            >
                               <i
                                 className="fa fa-info
                                             scale5 mr-3"
@@ -173,26 +172,23 @@ const Customers = ({ socket }) => {
           <li className="nav-item">
             <a
               className={`nav-link`}
-              onClick={() => getPageCustomers(page === 0 ? 0 : page-1)}
+              onClick={() => getPageCustomers(page === 0 ? 0 : page - 1)}
             >
               Prev Page
             </a>
-          </li> 
+          </li>
           <li className="nav-item">
             <a
               className={`nav-link`}
-              onClick={() => getPageCustomers(page+1)}
+              onClick={() => getPageCustomers(page + 1)}
             >
               Next Page
             </a>
           </li>
-          {repeat('i', page).map((i, index) => (
+          {repeat("i", page).map((i, index) => (
             <li className="nav-item">
-              <a
-                className={`nav-link`}
-                onClick={() => getPageCustomers(index)}
-              >
-                Page {index+1}
+              <a className={`nav-link`} onClick={() => getPageCustomers(index)}>
+                Page {index + 1}
               </a>
             </li>
           ))}

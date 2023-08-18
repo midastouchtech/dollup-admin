@@ -2,7 +2,7 @@ import { isNil, isEmpty, repeat, insert } from "ramda";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import moment from 'moment'
+import moment from "moment";
 /* eslint-disable */
 
 const getBadgeclassName = (status) => {
@@ -64,6 +64,7 @@ const Bookings = ({ socket }) => {
     socket.emit("SEARCH_BOOKING", { term: searchTerm });
     socket.on("RECEIVE_SEARCHED_BOOKING", (data) => {
       setBookings(data);
+      setLoading(false);
     });
     socket.on("RECEIVE_SEARCHED_BOOKING_NOT_FOUND", (data) => {
       setBookings(originalBookings);
@@ -85,11 +86,10 @@ const Bookings = ({ socket }) => {
     });
   };
 
-
   const getAllBookings = () => {
     socket.emit("GET_NEXT_PAGE_BOOKINGS", { page: 0, pageLimit });
     socket.on("RECEIVE_NEXT_PAGE_BOOKINGS", (data) => {
-      console.log("receive all bookings", data)
+      console.log("receive all bookings", data);
       const { bookings, pages, count } = data;
       setBookings(bookings);
       setPageCount(Math.round(count / pageLimit));
@@ -192,8 +192,8 @@ const Bookings = ({ socket }) => {
       functionsByMonth[monthType](p);
     }
   };
-  
-  console.log("bookins", bookings)
+
+  console.log("bookins", bookings);
   return (
     <div className="container-fluid">
       <div className="d-flex flex-wrap mb-2 align-items-center justify-content-between">
@@ -204,8 +204,6 @@ const Bookings = ({ socket }) => {
         </div>
       </div>
       <div className="row">
-        
-
         <div className="col-md-6 col-sm-12">
           <p>Search for an booking </p>
           <div className="row">
@@ -213,7 +211,7 @@ const Bookings = ({ socket }) => {
               <input
                 type="text"
                 className="form-control input-default mb-2"
-                placeholder="Enter company name, user name or booking id"
+                placeholder="Enter vendor, customer, service or stylist name"
                 onChange={(e) => setSearchTerm(e.target.value)}
                 value={searchTerm}
               />
@@ -313,15 +311,19 @@ const Bookings = ({ socket }) => {
                     <tbody>
                       {bookings?.map((booking, index) => (
                         <tr key={index}>
-                          <td>{moment(booking.dateTime).utc().format("DD MMM YYYY")}</td>
-                          <td>{moment(booking.dateTime).utc().format("HH:mm")}</td>
+                          <td>
+                            {moment(booking.dateTime)
+                              .utc()
+                              .format("DD MMM YYYY")}
+                          </td>
+                          <td>
+                            {moment(booking.dateTime).utc().format("HH:mm")}
+                          </td>
                           <td>{booking?.vendor?.storeName}</td>
                           <td>{booking?.customer?.name}</td>
                           <td>{booking?.service?.name}</td>
                           <td>{booking?.stylist?.name}</td>
-                          <td>
-                          {booking?.isComplete ? "Yes" : "No"}
-                          </td>
+                          <td>{booking?.isComplete ? "Yes" : "No"}</td>
                           <td>
                             <Link
                               to={`/booking/${booking.id}`}
