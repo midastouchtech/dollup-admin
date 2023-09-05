@@ -7,6 +7,7 @@ import AppointmentCreator from "./pages/appointments/appointment/create";
 import AppointmentQuote from "./pages/appointments/appointment/quote";
 
 import Vendors from "./pages/vendors";
+import VendorEdit from "./pages/vendors/vendor/edit";
 import Customers from "./pages/customers";
 import Services from "./pages/services";
 import Stylists from "./pages/stylists";
@@ -18,6 +19,7 @@ import SubCategories from "./pages/subCategories";
 import SubCategoryCreator from "./pages/subCategories/subCategory/create";
 import SubCategoryEditor from "./pages/subCategories/subCategory/edit";
 import Requests from "./pages/requests";
+import BookingsBy from "./pages/bookings-by";
 
 import Settings from "./pages/settings";
 import Messages from "./pages/messages";
@@ -97,6 +99,14 @@ const Main = () => {
           }
         />
         <Route
+          path="/bookings-by/:name"
+          element={
+            <Layout socket={socket}>
+              <BookingsBy socket={socket} />
+            </Layout>
+          }
+        />
+        <Route
           path="/vendors"
           element={
             <Layout socket={socket}>
@@ -141,6 +151,14 @@ const Main = () => {
           element={
             <Layout socket={socket}>
               <AppointmentEditor socket={socket} />
+            </Layout>
+          }
+        />
+        <Route
+          path="/vendor/edit/:vendorId"
+          element={
+            <Layout socket={socket}>
+              <VendorEdit socket={socket} />
             </Layout>
           }
         />

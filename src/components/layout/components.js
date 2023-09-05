@@ -7,19 +7,25 @@ import {
   FaCog,
   FaSignOutAlt,
   FaBell,
+  FaPeopleArrows,
+  FaPeopleLine,
+  FaCogs,
 } from "react-icons/fa";
+
 import { propSatisfies } from "ramda";
 import { useNavigate } from "react-router-dom";
 import { Fragment } from "react";
-
+import { BsCardChecklist, BsPeopleFill } from "react-icons/bs";
+import { GiOfficeChair } from "react-icons/gi";
+import { MdManageAccounts} from "react-icons/md";
 const iconMap = {
-  list: FaClipboardList,
-  chart: FaChartBar,
-  money: FaMoneyCheckAlt,
-  envelope: FaEnvelope,
+  list: BsCardChecklist,
+  vendors: FaPeopleArrows,
+  money: BsPeopleFill,
+  envelope: GiOfficeChair,
   settings: FaCog,
-  logout: FaSignOutAlt,
-  bell: FaBell,
+  logout: FaCogs,
+  bell: MdManageAccounts,
 };
 
 const ListItem = styled.li`
@@ -59,39 +65,42 @@ const IconContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${(props) => props.color || "#1F1F2B"};
-  border-radius: 100px;
   margin-right: 15px;
   svg {
-    fill: ${(props) => props.fill || "#848484"};
+    fill: #fff;
   }
 `;
 
 const StyledLi = styled.li`
-  border: none !important;
+cursor: pointer;
+  color: #8391a2 !important;
   background: transparent !important;
-  color: #fff !important;
-  border-bottom: 1px solid #fff !important;
- 
+  border: none !important;
   &:hover {
-    background: orange !important;
-  }
-  a{
     color: #fff !important;
-    
+    border-radius: 5px;
+    background: #515f722b !important;
   }
-  &.selected{
-    background: #5a094e !important;
+  &.selected {
+    background: #515f722b !important;
+    border-radius: 5px;
+    color: #fff !important;
   }
-  p{
+  p {
     margin: 0 !important;
   }
+`;
+
+const Container = styled.div`
+  display:flex;
+  justify-content: space-tweeen;
+  align-items: center;
 `;
 
 export function ListItemIcon({ icon, ...rest }) {
   const Icon = iconMap[icon];
   return (
-    <IconContainer {...rest}>
+    <IconContainer>
       <Icon />
     </IconContainer>
   );
@@ -106,26 +115,33 @@ export function NavItem({ icon, title, link, isActive, external }) {
   };
   return (
     <Fragment>
-        {!external && (
-            <StyledLi
-            className={`list-group-item list-group-item-action list-group-item-dark py-2 ripple ${
-              isActive ? "selected" : ""
-            }`}
-            onClick={() => gotuUrl()}
-          >
-            <p>{title}</p>
-          </StyledLi>
-        )}
-        {external && (
-            <StyledLi
-            className={`list-group-item list-group-item-action list-group-item-dark py-2 ripple ${
-              isActive ? "selected" : ""
-            }`}
-            
-          >
-            <a href={link} target="_blank" rel="noreferrer"><p>{title}</p></a>
-          </StyledLi>
-        )}
+      {!external && (
+        <StyledLi
+          className={`list-group-item list-group-item-action list-group-item-dark py-2 ripple ${
+            isActive ? "selected" : ""
+          }`}
+          onClick={() => gotuUrl()}
+        >
+          <Container>
+            <ListItemIcon icon={icon} />
+            {title}
+          </Container>
+        </StyledLi>
+      )}
+      {external && (
+        <StyledLi
+          className={`list-group-item list-group-item-action list-group-item-dark py-2 ripple ${
+            isActive ? "selected" : ""
+          }`}
+        >
+          <a href={link} target="_blank" rel="noreferrer">
+            <Container>
+              {iconMap[icon]}
+              {title}
+            </Container>
+          </a>
+        </StyledLi>
+      )}
     </Fragment>
   );
 }

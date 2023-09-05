@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import moment from "moment";
+import { useParams } from "react-router-dom";
 /* eslint-disable */
 
 const getBadgeclassName = (status) => {
@@ -57,11 +58,12 @@ const Bookings = ({ socket }) => {
   const [hasRequested, setHasRequested] = useState(false);
   const [pageCount, setPageCount] = useState(0);
   const [appCount, setAppCount] = useState(0);
+  let params = useParams();
 
-  const handleSearch = async () => {
+  const handleSearch = async (term) => {
     setLoading(true);
     setNotFound(false);
-    socket.emit("SEARCH_BOOKING", { term: searchTerm });
+    socket.emit("SEARCH_BOOKING", { term });
     socket.on("RECEIVE_SEARCHED_BOOKING", (data) => {
       setBookings(data);
       setLoading(false);
@@ -80,7 +82,6 @@ const Bookings = ({ socket }) => {
   };
 
   const handleFilter = () => {
-    console.log("filtering by date", fromDate);
     socket.emit("GET_BOOKINGS_BY_DATE", { date: fromDate });
     socket.on("RECEIVE_BOOKINGS_BY_DATE", (newBookings) => {
       setBookings(newBookings);
@@ -101,9 +102,16 @@ const Bookings = ({ socket }) => {
 
   useEffect(() => {
     console.log("use effect socket", socket);
+    console.log("params", params);
     if (socket && !bookings && hasRequested === false) {
       setHasRequested(true);
-      getAllBookings();
+      const {name} = params;
+    
+        if(name){
+            handleSearch(name);
+            setSearchTerm(name)
+        }
+
     }
   }, [socket]);
 
@@ -194,96 +202,16 @@ const Bookings = ({ socket }) => {
     }
   };
 
-  console.log("bookins", bookings);
   return (
     <div className="container-fluid">
       <div className="d-flex flex-wrap mb-2 align-items-center justify-content-between">
         <div className="mb-3 mr-3">
-          <h1 className="fs-16 text-black font-w600 mb-0">Bookings</h1>
-          <span className="fs-14">Querying from {appCount} bookings. </span>
+          <h1 className="fs-16 text-black font-w600 mb-0">
+            Showing bookings by "{searchTerm}"
+          </h1>
+          <span className="fs-14">Found {bookings?.length} bookings. </span>
           <div className="row"></div>
         </div>
-      </div>
-      <div className="row">
-        <div className="col-md-6 col-sm-12">
-          <p>Search for an booking </p>
-          <div className="row">
-            <div className="col-md-6 col-sm-12">
-              <input
-                type="text"
-                className="form-control input-default mb-2"
-                placeholder="Enter vendor, customer, service or stylist name"
-                onChange={(e) => setSearchTerm(e.target.value)}
-                value={searchTerm}
-              />
-            </div>
-            <div className="col-md-4 col-sm-12">
-              <button
-                type="button"
-                class="btn btn-primary btn-block mb-2"
-                onClick={handleSearch}
-              >
-                Search
-              </button>
-            </div>
-            <div className="col-md-2 col-sm-12">
-              <button
-                type="button"
-                class="btn btn-primary btn-block mb-3"
-                onClick={clearSearch}
-              >
-                Clear
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-6 col-sm-12">
-          <p>Filter database bookings by date</p>
-          <div className="row">
-            <div className="col-md-6 col-sm-12">
-              <div class="input-group input-daterange mb-2">
-                <input
-                  type="date"
-                  class="form-control"
-                  value={fromDate}
-                  onChange={(e) => setFromDate(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="col-md-4 col-sm-12">
-              <button
-                type="button"
-                class="btn btn-primary btn-block mb-2"
-                onClick={handleFilter}
-              >
-                Filter
-              </button>
-            </div>
-            <div className="col-md-2 col-sm-12">
-              <button
-                type="button"
-                class="btn btn-primary btn-block mb-3"
-                onClick={clearSearch}
-              >
-                Clear
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-12 d-flex justify-content-center">
-          {loading && (
-            <div className="spinner-border" role="status">
-              <span className="sr-only">Searching for booking</span>
-            </div>
-          )}
-        </div>
-        {notFound && (
-          <div className="alert alert-danger" role="alert">
-            Appointment could not be found.
-          </div>
-        )}
       </div>
 
       <br />
@@ -321,16 +249,26 @@ const Bookings = ({ socket }) => {
                             {moment(booking.dateTime).utc().format("HH:mm")}
                           </td>
                           <td>
-                            <a href={`/bookings-by/${booking?.vendor?.storeName}`}>
+                            <a
+                              href={`/bookings-by/${booking?.vendor?.storeName}`}
+                            >
                               {booking?.vendor?.storeName}
                             </a>
                           </td>
-                          <td><a href={`/bookings-by/${booking?.customer?.name}`}>{booking?.customer?.name}</a></td>
                           <td>
-                            <a href={`/bookings-by/${booking?.service?.name}`}>{booking?.service?.name}</a>
+                            <a href={`/bookings-by/${booking?.customer?.name}`}>
+                              {booking?.customer?.name}
+                            </a>
                           </td>
                           <td>
-                            <a href={`/bookings-by/${booking?.stylist?.name}`}>{booking?.stylist?.name}</a>
+                            <a href={`/bookings-by/${booking?.service?.name}`}>
+                              {booking?.service?.name}
+                            </a>
+                          </td>
+                          <td>
+                            <a href={`/bookings-by/${booking?.stylist?.name}`}>
+                              {booking?.stylist?.name}
+                            </a>
                           </td>
                           <td>{booking?.isComplete ? "Yes" : "No"}</td>
                           <td>

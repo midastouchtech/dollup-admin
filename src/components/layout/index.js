@@ -11,6 +11,7 @@ import cookies from "js-cookie";
 import { Helmet } from "react-helmet";
 
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 
 const exists = (i) => !isNil(i) && !isEmpty(i);
 
@@ -134,10 +135,8 @@ const Username = styled.p`
 `;
 
 const StyledAside = styled.aside`
-  height: 90vh;
-  background-color: #78136f !important;
-  border-radius: 20px;
-  margin-top: 5vh;
+  height: 100vh;
+  background-color: #313a46 !important;
 `;
 
 const StyledMain = styled.main`
@@ -152,8 +151,8 @@ const StyledMain = styled.main`
   }
   .table .thead-dark th {
     color: #fff;
-    background-color: #840070;
-    border-color: #840070;
+    background-color: #313a46;
+    border-color: #313a46;
   }
 `;
 
@@ -182,37 +181,37 @@ const navItems = [
     isActive: true,
   },
   {
-    icon: "Vendors",
+    icon: "vendors",
     title: "Vendors",
     link: "/vendors",
   },
   {
-    icon: "Customers",
+    icon: "money",
     title: "Customers",
     link: "/customers",
   },
   {
-    icon: "Services",
+    icon: "envelope",
     title: "Services",
     link: "/services",
   },
   {
-    icon: "Services",
+    icon: "bell",
     title: "Stylists",
     link: "/stylists",
   },
   {
-    icon: "Services",
+    icon: "settings",
     title: "Categories",
     link: "/categories",
   },
   {
-    icon: "Services",
+    icon: "logout",
     title: "Sub Categories",
     link: "/sub-categories",
   },
   {
-    icon: "Services",
+    icon: "bell",
     title: "Requests",
     link: "/requests",
   },
@@ -298,14 +297,12 @@ function Layout({ socket, children }) {
       {!isAuthRoute && (
         <Fragment>
           <div className="row">
-            <StyledAside className="col-2 ml-4 text-light pt-5 d-none d-sm-none d-lg-block">
+            <StyledAside className="col-2 text-light pt-5 d-none d-sm-none d-lg-block">
               <div className="d-flex flex-column align-items-center">
                 <div className="d-flex flex-column align-items-center">
                   <Image path={user?.details?.picture || "/assets/man.png"} />
-                  <Username>
-                    {user?.details?.name}
-                    <span>@{user?.id}</span>
-                  </Username>
+                  <Username>{user?.details?.name}</Username>
+                  <span>{user?.details.email}</span>
                 </div>
               </div>
               <ul class="list-group list-group-flush mx-3 mt-4  text-light">
