@@ -57,6 +57,16 @@ function App({ socket }) {
     sethasUpdatedCompany(hasUpdatedCompany);
   });
 
+  const submit = () => {
+    socket.emit("UPDATE_VENDOR", vendor);
+    socket.on("RECEIVE_VENDOR", (v) => {
+      console.log("RECEIVE_VENDOR", v);
+      setVendor(v);
+      setOriginalCompany(v);
+    });
+    navigate("/vendors");
+  };
+
   return (
     <div className="container">
       <div className="py-5 text-center">
@@ -96,7 +106,7 @@ function App({ socket }) {
         </div>
         <div className="col-md-8 order-md-1">
           <h4 className="mb-3">Ownership</h4>
-          <form className="needs-validation" novalidate>
+          <form className="needs-validation" novalidate onSubmit={submit}>
             <div className="row">
               <div className="col-md-6 mb-3">
                 <label htmlFor="firstName">First name</label>
@@ -137,10 +147,9 @@ function App({ socket }) {
             <div className="mb-3">
               <label htmlFor="email">Cellphone Number</label>
               <input
-                type="email"
+                type="text"
                 className="form-control"
-                id="email"
-                placeholder="you@example.com"
+                id="cellphonenumber"
                 value={vendor.cell}
                 onChange={(e) =>
                   setVendor(assoc("cell", e.target.value, vendor))

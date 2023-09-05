@@ -131,7 +131,6 @@ const Stylists = ({ socket }) => {
                         <th>Cell</th>
                         <th>Email</th>
                         <th>Vendor </th>
-                        <th></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -141,16 +140,6 @@ const Stylists = ({ socket }) => {
                           <td>{stylist?.phoneNumber}</td>
                           <td>{stylist?.email}</td>
                           <td>{stylist?.vendor?.storeName}</td>
-                          <td>
-                            <Link to={`/stylist/edit/${stylist.id}`}  className="btn btn-xs btn-primary text-nowrap">
-                              <i
-                                className="fa fa-info
-                                            scale5 mr-3"
-                                aria-hidden="true"
-                              ></i>
-                              More info
-                            </Link>
-                          </td>
                         </tr>
                       ))}
                     </tbody>

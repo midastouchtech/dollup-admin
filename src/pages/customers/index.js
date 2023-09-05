@@ -127,7 +127,6 @@ const Customers = ({ socket }) => {
                         <th>Cell</th>
                         <th>Email</th>
                         <th>Address </th>
-                        <th></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -137,19 +136,6 @@ const Customers = ({ socket }) => {
                           <td>{customer?.phoneNumber}</td>
                           <td>{customer?.email}</td>
                           <td>{customer?.address?.address}</td>
-                          <td>
-                            <Link
-                              to={`/customer/edit/${customer.id}`}
-                              className="btn btn-xs btn-primary text-nowrap"
-                            >
-                              <i
-                                className="fa fa-info
-                                            scale5 mr-3"
-                                aria-hidden="true"
-                              ></i>
-                              More info
-                            </Link>
-                          </td>
                         </tr>
                       ))}
                     </tbody>

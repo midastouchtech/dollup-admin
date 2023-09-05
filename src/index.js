@@ -8,6 +8,7 @@ import AppointmentQuote from "./pages/appointments/appointment/quote";
 
 import Vendors from "./pages/vendors";
 import VendorEdit from "./pages/vendors/vendor/edit";
+import Booking from "./pages/booking";
 import Customers from "./pages/customers";
 import Services from "./pages/services";
 import Stylists from "./pages/stylists";
@@ -103,6 +104,14 @@ const Main = () => {
           element={
             <Layout socket={socket}>
               <BookingsBy socket={socket} />
+            </Layout>
+          }
+        />
+        <Route
+          path="/booking/:id"
+          element={
+            <Layout socket={socket}>
+              <Booking socket={socket} />
             </Layout>
           }
         />

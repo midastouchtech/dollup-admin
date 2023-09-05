@@ -136,7 +136,6 @@ const Services = ({ socket }) => {
                         <th>Salon</th>
                         <th>Duration</th>
                         <th>Price </th>
-                        <th></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -147,16 +146,6 @@ const Services = ({ socket }) => {
                           <td>{service?.vendor?.storeName}</td>
                           <td>{service?.duration?.hours} hr {service?.duration?.minutes} min </td>
                           <td>{service?.salePrice}</td>
-                          <td>
-                            <Link to={`/service/edit/${service.id}`}  className="btn btn-xs btn-primary text-nowrap">
-                              <i
-                                className="fa fa-info
-                                            scale5 mr-3"
-                                aria-hidden="true"
-                              ></i>
-                              More info
-                            </Link>
-                          </td>
                         </tr>
                       ))}
                     </tbody>
