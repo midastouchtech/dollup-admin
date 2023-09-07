@@ -215,6 +215,11 @@ const navItems = [
     title: "Requests",
     link: "/requests",
   },
+  {
+    icon: "settings",
+    title: "Analytics",
+    link: "/analytics",
+  },
 ];
 
 function Layout({ socket, children }) {

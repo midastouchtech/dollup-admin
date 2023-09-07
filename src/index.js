@@ -12,6 +12,7 @@ import Booking from "./pages/booking";
 import Customers from "./pages/customers";
 import Services from "./pages/services";
 import Stylists from "./pages/stylists";
+import Analytics from "./pages/analytics";
 
 import Categories from "./pages/categories";
 import CategoryCreator from "./pages/categories/category/create";
@@ -96,6 +97,14 @@ const Main = () => {
           element={
             <Layout socket={socket}>
               <App socket={socket} />
+            </Layout>
+          }
+        />
+        <Route
+          path="/analytics"
+          element={
+            <Layout socket={socket}>
+              <Analytics socket={socket} />
             </Layout>
           }
         />
